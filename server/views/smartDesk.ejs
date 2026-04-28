@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧桌面助理</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>智慧桌面助理</h1>
+        <a href="/" class="back-btn">返回儀表板</a>
+
+        <div class="device-details">
+            <h3>目前狀態：</h3>
+            <% const isOnline = signal && !/^(離線|offline)$/i.test(String(signal).trim()); %>
+            <div id="statusDisplay" class="status-box <%= isOnline ? 'status-online' : 'status-offline' %>">
+                <%= isOnline ? '連線' : '離線' %>
+            </div>
+        </div>
+
+        <div class="controls">
+            <h3>遠端控制：</h3>
+            <!-- 傳送指令給 Server -> MQTT -> Pico W -->
+            <button class="on" onclick="sendControl('on')">開啟設備</button>
+            <button class="off" onclick="sendControl('off')">關閉設備</button>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        const deviceKey = "smartDesk"; // 對應你 Server 的 deviceSignals Key
+
+        // 1. 監聽 Server 推播的即時更新
+        socket.on('updateSignals', (data) => {
+            if (data[deviceKey] !== undefined) {
+                const status = data[deviceKey];
+                const normalizedStatus = String(status ?? '').trim().toLowerCase();
+                const isOnline = normalizedStatus !== '' && normalizedStatus !== '離線' && normalizedStatus !== 'offline';
+                const el = document.getElementById('statusDisplay');
+
+                el.innerText = isOnline ? '連線' : '離線';
+                el.className = 'status-box ' + (isOnline ? 'status-online' : 'status-offline');
+            }
+        });
+
+        // 2. 發送控制指令給 Server
+        function sendControl(command) {
+            socket.emit('webControl', {
+                device: deviceKey,
+                cmd: command
+            });
+            console.log("發送指令:", command);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+/* 深色主題手機介面樣式 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #bb86fc;
+}
+
+.device-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+.device-card {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    transition: background-color 0.3s;
+}
+
+.device-card:hover {
+    background-color: #2a2a2a;
+}
+
+.device-card h2 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+}
+
+.device-card p {
+    margin: 0 0 15px 0;
+    color: #cccccc;
+}
+
+/* 連線狀態樣式 */
+.status-online {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.status-offline {
+    color: #f44336;
+    font-weight: bold;
+}
+
+.view-btn {
+    background-color: #bb86fc;
+    color: #121212;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.view-btn:hover {
+    background-color: #9c4dcc;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #bb86fc;
+    color: #121212;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.device-details {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.device-details p {
+    margin: 0;
+    word-wrap: break-word;
+}
+
+/* 裝置詳情頁 */
+h3 {
+    color: #bb86fc;
+    margin: 15px 0 8px;
+}
+
+.status-box {
+    padding: 20px;
+    border: 1px solid #333;
+    margin: 10px 0;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border-radius: 8px;
+    word-wrap: break-word;
+}
+
+.status-box.status-online {
+    color: #4CAF50;
+}
+
+.status-box.status-offline {
+    color: #f44336;
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+.control-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.garage-control-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.direction-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 72px);
+    grid-template-rows: repeat(3, 56px);
+    gap: 10px;
+    margin-bottom: 12px;
+    justify-content: center;
+}
+
+.direction-spacer {
+    width: 72px;
+    height: 56px;
+}
+
+.controls button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-right: 0;
+}
+
+.on {
+    background-color: #4CAF50;
+    color: #121212;
+}
+
+.off {
+    background-color: #f44336;
+    color: #ffffff;
+}
+
+.pause {
+    background-color: #ffb300;
+    color: #121212;
+}
+
+.extend {
+    background-color: #29b6f6;
+    color: #121212;
+}
+
+.direction-btn {
+    background-color: #03a9f4;
+    color: #121212;
+    width: 72px;
+    min-height: 56px;
+    padding: 0;
+}
+
+.center-btn {
+    background-color: #616161;
+    color: #ffffff;
+}
+
+.photo-btn {
+    width: 100%;
+    background-color: #ff7043;
+    color: #121212;
+}
+
+.feed-btn,
+.schedule-btn {
+    width: 100%;
+    background-color: #66bb6a;
+    color: #121212;
+}
+
+.schedule-form {
+    display: grid;
+    gap: 10px;
+}
+
+.camera-panel {
+    margin-top: 20px;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.camera-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.camera-panel-header h3 {
+    margin: 0;
+}
+
+.stream-badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #2f2f2f;
+    color: #ffd54f;
+}
+
+.stream-online {
+    background-color: rgba(76, 175, 80, 0.16);
+    color: #66bb6a;
+}
+
+.stream-offline {
+    background-color: rgba(244, 67, 54, 0.16);
+    color: #ef5350;
+}
+
+.camera-frame {
+    margin-top: 14px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid #444;
+    background-color: #000000;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.camera-stream {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    background-color: #000000;
+}
+
+.camera-note {
+    margin: 12px 0 0;
+    color: #bbbbbb;
+    font-size: 13px;
+}
+
+.camera-actions {
+    margin-top: 14px;
+    display: grid;
+    gap: 10px;
+}
+
+.camera-link {
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 10px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    background-color: #29b6f6;
+    color: #121212;
+}
+
+.camera-link:hover {
+    filter: brightness(0.95);
+}
+
+.secondary-link {
+    background-color: #78909c;
+    color: #ffffff;
+}
+
+.form-label {
+    color: #cccccc;
+    font-size: 14px;
+}
+
+.form-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #111111;
+    color: #ffffff;
+}
+
+.speak-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.speak-form input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #111111;
+    color: #ffffff;
+}
+
+.speak-btn {
+    background-color: #4CAF50;
+    color: #121212;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 手機響應式設計 */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .device-card {
+        padding: 15px;
+    }
+
+    .control-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .direction-grid {
+        grid-template-columns: repeat(3, 64px);
+        grid-template-rows: repeat(3, 52px);
+        gap: 8px;
+    }
+
+    .direction-spacer,
+    .direction-btn {
+        width: 64px;
+        min-height: 52px;
+    }
+}

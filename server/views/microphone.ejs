@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>麥克風播報系統</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>麥克風播報系統</h1>
+        <a href="/" class="back-btn">返回儀表板</a>
+        <div class="device-details">
+            <h3>目前狀態：</h3>
+            <% const isOnline = signal && !/^(離線|offline)$/i.test(String(signal).trim()); %>
+            <div id="statusDisplay" class="status-box <%= isOnline ? 'status-online' : 'status-offline' %>">
+                <%= isOnline ? '連線' : '離線' %>
+            </div>
+        </div>
+
+        <div class="controls">
+            <h3>播報控制：</h3>
+            <div class="speak-form">
+                <input type="text" id="speakText" placeholder="輸入要播報的文字" maxlength="100">
+                <button class="speak-btn" onclick="sendSpeak()">播報</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        const deviceKey = 'microphone';
+
+        socket.on('updateSignals', (data) => {
+            if (data[deviceKey] === undefined) {
+                return;
+            }
+
+            const status = data[deviceKey];
+            const normalizedStatus = String(status ?? '').trim().toLowerCase();
+            const isOnline = normalizedStatus !== '' && normalizedStatus !== '離線' && normalizedStatus !== 'offline';
+            const statusDisplay = document.getElementById('statusDisplay');
+
+            statusDisplay.innerText = isOnline ? '連線' : '離線';
+            statusDisplay.className = 'status-box ' + (isOnline ? 'status-online' : 'status-offline');
+        });
+
+        function sendSpeak() {
+            const text = document.getElementById('speakText').value.trim();
+            if (!text) {
+                alert('請輸入要播報的文字');
+                return;
+            }
+
+            socket.emit('webControl', {
+                device: deviceKey,
+                cmd: 'say',
+                text: text
+            });
+            console.log('發送播報指令:', text);
+            document.getElementById('speakText').value = '';
+        }
+
+        // 按 Enter 鍵也可以發送
+        document.getElementById('speakText').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendSpeak();
+            }
+        });
+    </script>
+</body>
+</html>

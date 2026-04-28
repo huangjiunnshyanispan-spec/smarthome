@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寵物餵食機</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>寵物餵食機</h1>
+        <a href="/" class="back-btn">返回儀表板</a>
+        <div class="device-details">
+            <h3>目前狀態：</h3>
+            <% const isOnline = signal && !/^(離線|offline)$/i.test(String(signal).trim()); %>
+            <div id="statusDisplay" class="status-box <%= isOnline ? 'status-online' : 'status-offline' %>">
+                <%= isOnline ? '連線' : '離線' %>
+            </div>
+        </div>
+
+        <div class="controls">
+            <h3>餵食控制：</h3>
+            <button class="feed-btn" onclick="sendFeedNow()">立即餵食</button>
+        </div>
+
+        <div class="controls">
+            <h3>定時設定：</h3>
+            <div class="schedule-form">
+                <label class="form-label" for="feedTime">餵食時間</label>
+                <input id="feedTime" class="form-input" type="time" required>
+                <button class="schedule-btn" onclick="sendSchedule()">發送定時設定</button>
+            </div>
+            <p id="scheduleMessage" class="form-message"></p>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        const deviceKey = 'petFeeder';
+
+        socket.on('updateSignals', (data) => {
+            if (data[deviceKey] === undefined) {
+                return;
+            }
+
+            const status = data[deviceKey];
+            const normalizedStatus = String(status ?? '').trim().toLowerCase();
+            const isOnline = normalizedStatus !== '' && normalizedStatus !== '離線' && normalizedStatus !== 'offline';
+            const statusDisplay = document.getElementById('statusDisplay');
+
+            statusDisplay.innerText = isOnline ? '連線' : '離線';
+            statusDisplay.className = 'status-box ' + (isOnline ? 'status-online' : 'status-offline');
+        });
+
+        function sendFeedNow() {
+            socket.emit('webControl', {
+                device: deviceKey,
+                cmd: 'feed'
+            });
+
+            document.getElementById('scheduleMessage').innerText = '已送出立即餵食指令';
+        }
+
+        function sendSchedule() {
+            const timeInput = document.getElementById('feedTime');
+            const message = document.getElementById('scheduleMessage');
+            const feedTime = timeInput.value;
+
+            if (!feedTime) {
+                message.innerText = '請先選擇餵食時間';
+                return;
+            }
+
+            socket.emit('webControl', {
+                device: deviceKey,
+                cmd: `schedule:${feedTime}`
+            });
+
+            message.innerText = `已送出定時設定：${feedTime}`;
+        }
+    </script>
+</body>
+</html>

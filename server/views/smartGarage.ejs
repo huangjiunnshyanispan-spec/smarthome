@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧車庫</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>智慧車庫</h1>
+        <a href="/" class="back-btn">返回儀表板</a>
+        <div class="device-details">
+            <h3>目前狀態：</h3>
+            <% const isOnline = signal && !/^(離線|offline)$/i.test(String(signal).trim()); %>
+            <div id="statusDisplay" class="status-box <%= isOnline ? 'status-online' : 'status-offline' %>">
+                <%= isOnline ? '連線' : '離線' %>
+            </div>
+        </div>
+
+        <div class="controls">
+            <h3>車庫控制：</h3>
+            <div class="control-grid garage-control-grid">
+                <button class="on" onclick="sendControl('open')">開門</button>
+                <button class="off" onclick="sendControl('close')">關門</button>
+                <button class="pause" onclick="sendControl('pause')">暫停</button>
+                <button class="extend" onclick="sendControl('extend')">延長</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        const deviceKey = 'smartGarage';
+
+        socket.on('updateSignals', (data) => {
+            if (data[deviceKey] === undefined) {
+                return;
+            }
+
+            const status = data[deviceKey];
+            const normalizedStatus = String(status ?? '').trim().toLowerCase();
+            const isOnline = normalizedStatus !== '' && normalizedStatus !== '離線' && normalizedStatus !== 'offline';
+            const statusDisplay = document.getElementById('statusDisplay');
+
+            statusDisplay.innerText = isOnline ? '連線' : '離線';
+            statusDisplay.className = 'status-box ' + (isOnline ? 'status-online' : 'status-offline');
+        });
+
+        function sendControl(command) {
+            socket.emit('webControl', {
+                device: deviceKey,
+                cmd: command
+            });
+            console.log('發送車庫指令:', command);
+        }
+    </script>
+</body>
+</html>

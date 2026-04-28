@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>影像監控系統</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>影像監控系統</h1>
+        <a href="/" class="back-btn">返回儀表板</a>
+        <div class="device-details">
+            <h3>目前狀態：</h3>
+            <% const isOnline = signal && !/^(離線|offline)$/i.test(String(signal).trim()); %>
+            <div id="statusDisplay" class="status-box <%= isOnline ? 'status-online' : 'status-offline' %>">
+                <%= isOnline ? '連線' : '離線' %>
+            </div>
+        </div>
+
+        <div class="camera-panel">
+            <div class="camera-panel-header">
+                <h3>即時監視畫面：</h3>
+                <span id="streamStatus" class="stream-badge">載入中</span>
+            </div>
+            <div class="camera-frame">
+                <img
+                    id="liveStream"
+                    class="camera-stream"
+                    src="http://192.168.69.82:8080/stream.mjpg"
+                    alt="即時監視畫面"
+                >
+            </div>
+            <p class="camera-note">影像來源：myimx219 Live Preview (640x480)</p>
+            <div class="camera-actions">
+                <a class="camera-link" href="http://192.168.69.82:8080/" target="_blank" rel="noopener noreferrer">開啟原始監控頁面</a>
+                <a class="camera-link secondary-link" href="http://192.168.69.82:8080/snapshot.jpg" target="_blank" rel="noopener noreferrer">查看最新快照</a>
+            </div>
+        </div>
+
+        <div class="controls">
+            <h3>雲台控制：</h3>
+            <div class="direction-grid">
+                <div class="direction-spacer" aria-hidden="true"></div>
+                <button class="direction-btn" onclick="sendControl('up')">上</button>
+                <div class="direction-spacer" aria-hidden="true"></div>
+                <button class="direction-btn" onclick="sendControl('left')">左</button>
+                <button class="direction-btn center-btn" onclick="sendControl('stop')">停止</button>
+                <button class="direction-btn" onclick="sendControl('right')">右</button>
+                <div class="direction-spacer" aria-hidden="true"></div>
+                <button class="direction-btn" onclick="sendControl('down')">下</button>
+                <div class="direction-spacer" aria-hidden="true"></div>
+            </div>
+            <button class="photo-btn" onclick="sendControl('capture')">拍照</button>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        const deviceKey = 'surveillance';
+        const streamUrl = 'http://192.168.69.82:8080/stream.mjpg';
+        const snapshotUrl = 'http://192.168.69.82:8080/snapshot.jpg';
+        const liveStream = document.getElementById('liveStream');
+        const streamStatus = document.getElementById('streamStatus');
+
+        function updateStreamBadge(text, isOnline) {
+            streamStatus.innerText = text;
+            streamStatus.className = 'stream-badge ' + (isOnline ? 'stream-online' : 'stream-offline');
+        }
+
+        if (liveStream) {
+            liveStream.addEventListener('load', () => updateStreamBadge('影像連線中', true));
+            liveStream.addEventListener('error', () => {
+                updateStreamBadge('影像連線失敗，改顯示快照', false);
+                liveStream.src = snapshotUrl + '?t=' + Date.now();
+            });
+        }
+
+        socket.on('updateSignals', (data) => {
+            if (data[deviceKey] === undefined) {
+                return;
+            }
+
+            const status = data[deviceKey];
+            const normalizedStatus = String(status ?? '').trim().toLowerCase();
+            const isOnline = normalizedStatus !== '' && normalizedStatus !== '離線' && normalizedStatus !== 'offline';
+            const statusDisplay = document.getElementById('statusDisplay');
+
+            statusDisplay.innerText = isOnline ? '連線' : '離線';
+            statusDisplay.className = 'status-box ' + (isOnline ? 'status-online' : 'status-offline');
+        });
+
+        function sendControl(command) {
+            socket.emit('webControl', {
+                device: deviceKey,
+                cmd: command
+            });
+            console.log('發送監控指令:', command);
+        }
+    </script>
+</body>
+</html>

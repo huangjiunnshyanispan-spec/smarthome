@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="draw.io" type="device" version="21.0.0">
+  <diagram name="Smart Home Architecture" id="architecture">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1600">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <mxCell id="title" value="智慧家居系統分層架構" style="fontSize=24;fontStyle=bold;align=center;" vertex="1" parent="1">
+          <mxGeometry x="0" y="10" width="1200" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer1" value="表現層 (Presentation)" style="rounded=0;fillColor=#e8f4f8;strokeWidth=2;fontSize=12;fontStyle=bold;" vertex="1" parent="1">
+          <mxGeometry x="20" y="70" width="1160" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="v1" value="index.html" style="rounded=1;fillColor=#cce5ff;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="100" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="v2" value="smartDesk.ejs" style="rounded=1;fillColor=#cce5ff;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="90" width="100" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="v3" value="smartGarage.ejs" style="rounded=1;fillColor=#cce5ff;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="90" width="100" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="v4" value="surveillance.ejs" style="rounded=1;fillColor=#cce5ff;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="90" width="100" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="v5" value="petFeeder.ejs" style="rounded=1;fillColor=#cce5ff;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="90" width="100" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="v6" value="voiceRecognition" style="rounded=1;fillColor=#cce5ff;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="90" width="100" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="v7" value="styles.css" style="rounded=1;fillColor=#cce5ff;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="90" width="100" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer2" value="路由層 (Routes)" style="rounded=0;fillColor=#f0f0f0;strokeWidth=2;fontSize=12;fontStyle=bold;" vertex="1" parent="1">
+          <mxGeometry x="20" y="240" width="1160" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="r1" value="deviceRoutes.js&#10;GET / GET /device/:key" style="rounded=1;fillColor=#ccffcc;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="260" width="400" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer3" value="控制層 (Controllers)" style="rounded=0;fillColor=#fff4e6;strokeWidth=2;fontSize=12;fontStyle=bold;" vertex="1" parent="1">
+          <mxGeometry x="20" y="360" width="1160" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="c1" value="pageController" style="rounded=1;fillColor=#ffe6cc;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="380" width="120" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="c2" value="mqttController" style="rounded=1;fillColor=#ffe6cc;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="260" y="380" width="120" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="c3" value="socketController" style="rounded=1;fillColor=#ffe6cc;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="380" width="120" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="c4" value="deviceConfig" style="rounded=1;fillColor=#ffe6cc;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="380" width="120" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="c5" value="server.js" style="rounded=1;fillColor=#ffe6cc;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="860" y="380" width="120" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer4" value="模型層 (Models)" style="rounded=0;fillColor=#f5e6ff;strokeWidth=2;fontSize=12;fontStyle=bold;" vertex="1" parent="1">
+          <mxGeometry x="20" y="520" width="1160" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="m1" value="deviceModel.js&#10;State Management" style="rounded=1;fillColor=#e6ccff;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="540" width="520" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer5" value="通信層 (Communication)" style="rounded=0;fillColor=#ffe6e6;strokeWidth=2;fontSize=12;fontStyle=bold;" vertex="1" parent="1">
+          <mxGeometry x="20" y="640" width="1160" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="comm1" value="MQTT&#10;(aedes)&#10;:1883" style="rounded=1;fillColor=#ffcccc;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="660" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comm2" value="Socket.io&#10;Real-time" style="rounded=1;fillColor=#ffcccc;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="420" y="660" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="comm3" value="Express&#10;:3000" style="rounded=1;fillColor=#ffcccc;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="660" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer6" value="外部系統 (External)" style="rounded=0;fillColor=#e6e6e6;strokeWidth=2;fontSize=12;fontStyle=bold;" vertex="1" parent="1">
+          <mxGeometry x="20" y="780" width="1160" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="ext1" value="Pico W&#10;MQTT Client" style="rounded=1;fillColor=#d9d9d9;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="800" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="ext2" value="Web Browser&#10;Socket Client" style="rounded=1;fillColor=#d9d9d9;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="840" y="800" width="120" height="80" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
